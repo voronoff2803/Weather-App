@@ -237,14 +237,16 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="2dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="selectDay"
+                        android:tag="0">
 
                         <ImageView
-                            android:id="@+id/imageView31"
+                            android:id="@+id/imageViewMO"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
                             android:layout_marginBottom="2dp"
@@ -254,7 +256,7 @@
                             tools:srcCompat="@drawable/sun" />
 
                         <TextView
-                            android:id="@+id/textView41"
+                            android:id="@+id/textViewMO"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/raleway_bold"
@@ -270,37 +272,42 @@
                             android:alpha="0.3"
                             android:fontFamily="@font/raleway_bold"
                             android:gravity="center"
-                            android:text="@string/fr"
+                            android:text="@string/mo"
                             android:textColorHint="#FFFFFF"
                             android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
                         android:layout_marginEnd="2dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="selectDay"
+                        android:tag="1">
 
                         <ImageView
+                            android:id="@+id/imageViewTU"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
                             android:layout_marginBottom="2dp"
                             android:scaleType="fitCenter"
-                            app:srcCompat="@drawable/rainy"
-                            app:tint="@color/colorAccent2"
-                            tools:srcCompat="@drawable/rainy" />
+                            app:srcCompat="@drawable/sun"
+                            app:tint="@color/colorAccent"
+                            tools:srcCompat="@drawable/sun" />
 
                         <TextView
+                            android:id="@+id/textViewTU"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/raleway_bold"
                             android:gravity="center"
-                            android:text="@string/rainny"
+                            android:text="@string/sunny"
                             android:textColorHint="#FFFFFF"
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/textView52"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:alpha="0.3"
@@ -312,50 +319,16 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
                         android:layout_marginEnd="2dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="selectDay"
+                        android:tag="2">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_marginBottom="2dp"
-                            android:scaleType="fitCenter"
-                            app:srcCompat="@drawable/rainy"
-                            app:tint="@color/colorAccent2"
-                            tools:srcCompat="@drawable/rainy" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/raleway_bold"
-                            android:gravity="center"
-                            android:text="@string/rainny"
-                            android:textColorHint="#FFFFFF"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.3"
-                            android:fontFamily="@font/raleway_bold"
-                            android:gravity="center"
-                            android:text="@string/we"
-                            android:textColorHint="#FFFFFF"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="2dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
+                            android:id="@+id/imageViewWE"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
                             android:layout_marginBottom="2dp"
@@ -365,6 +338,7 @@
                             tools:srcCompat="@drawable/sun" />
 
                         <TextView
+                            android:id="@+id/textViewWE"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/raleway_bold"
@@ -374,6 +348,48 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/textView53"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.3"
+                            android:fontFamily="@font/raleway_bold"
+                            android:gravity="center"
+                            android:text="@string/we"
+                            android:textColorHint="#FFFFFF"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:onClick="selectDay"
+                        android:tag="3">
+
+                        <ImageView
+                            android:id="@+id/imageViewTH"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="2dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/sun"
+                            app:tint="@color/colorAccent"
+                            tools:srcCompat="@drawable/sun" />
+
+                        <TextView
+                            android:id="@+id/textViewTH"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_bold"
+                            android:gravity="center"
+                            android:text="@string/sunny"
+                            android:textColorHint="#FFFFFF"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textView55"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:alpha="0.3"
@@ -385,50 +401,16 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
                         android:layout_marginEnd="2dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="selectDay"
+                        android:tag="4">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_marginBottom="2dp"
-                            android:scaleType="fitCenter"
-                            app:srcCompat="@drawable/rainy"
-                            app:tint="@color/colorAccent2"
-                            tools:srcCompat="@drawable/rainy" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/raleway_bold"
-                            android:gravity="center"
-                            android:text="@string/rainny"
-                            android:textColorHint="#FFFFFF"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.3"
-                            android:fontFamily="@font/raleway_bold"
-                            android:gravity="center"
-                            android:text="@string/mo"
-                            android:textColorHint="#FFFFFF"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="2dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageView"
+                            android:id="@+id/imageViewFR"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
                             android:layout_marginBottom="2dp"
@@ -438,7 +420,7 @@
                             tools:srcCompat="@drawable/sun" />
 
                         <TextView
-                            android:id="@+id/textView"
+                            android:id="@+id/textViewFR"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/raleway_bold"
@@ -448,13 +430,93 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/textView56"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:alpha="0.3"
                             android:fontFamily="@font/raleway_bold"
                             android:gravity="center"
                             android:text="@string/fr"
+                            android:textColorHint="#FFFFFF"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:onClick="selectDay"
+                        android:tag="5">
+
+                        <ImageView
+                            android:id="@+id/imageViewSA"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="2dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/sun"
+                            app:tint="@color/colorAccent"
+                            tools:srcCompat="@drawable/sun" />
+
+                        <TextView
+                            android:id="@+id/textViewSA"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_bold"
+                            android:gravity="center"
+                            android:text="@string/sunny"
+                            android:textColorHint="#FFFFFF"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textView57"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.3"
+                            android:fontFamily="@font/raleway_bold"
+                            android:gravity="center"
+                            android:text="@string/sa"
+                            android:textColorHint="#FFFFFF"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:onClick="selectDay"
+                        android:tag="6">
+
+                        <ImageView
+                            android:id="@+id/imageViewSU"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="2dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/sun"
+                            app:tint="@color/colorAccent"
+                            tools:srcCompat="@drawable/sun" />
+
+                        <TextView
+                            android:id="@+id/textViewSU"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_bold"
+                            android:gravity="center"
+                            android:text="@string/sunny"
+                            android:textColorHint="#FFFFFF"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textView58"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.3"
+                            android:fontFamily="@font/raleway_bold"
+                            android:gravity="center"
+                            android:text="@string/su"
                             android:textColorHint="#FFFFFF"
                             android:textSize="14sp" />
                     </LinearLayout>

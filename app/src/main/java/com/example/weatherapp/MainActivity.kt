@@ -1,10 +1,14 @@
 package com.example.weatherapp
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.androimads.retrolin.WeatherResponse
+import com.androimads.retrolin.DailyWeatherResponse
 import com.androimads.retrolin.WeatherService
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 
 import retrofit2.Call
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     var lang = "ru"
     var lat = "59.92285455155549"
     var lon = "30.29312550684746"
+
+    var weatherResponse: WeatherResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -39,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        getCurrentData()
+        getWeekData()
     }
 
     fun changeTheme(view: View) {
@@ -52,60 +58,93 @@ class MainActivity : AppCompatActivity() {
         outState.putBoolean("theme", isDarkTheme)
     }
 
-    internal fun getCurrentData() {
+    fun getWeekData() {
+        println("test")
+
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(WeatherService::class.java)
-        val call = service.getCurrentWeatherData(lat, lon, apiKey, lang)
+        val call = service.getForecastWeatherData(lat, lon, apiKey, lang)
         call.enqueue(object : Callback<WeatherResponse> {
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
                 if (response.code() == 200) {
-                    val weatherResponse = response.body()!!
+                    weatherResponse = response.body()!!
 
-                    val stringBuilder = "Country: " +
-                            weatherResponse.sys!!.country +
-                            "\n" +
-                            "Temperature: " +
-                            weatherResponse.main!!.temp +
-                            "\n" +
-                            "Temperature(Min): " +
-                            weatherResponse.main!!.temp_min +
-                            "\n" +
-                            "Temperature(Max): " +
-                            weatherResponse.main!!.temp_max +
-                            "\n" +
-                            "Humidity: " +
-                            weatherResponse.main!!.humidity +
-                            "\n" +
-                            "Pressure: " +
-                            weatherResponse.main!!.pressure +
-                            "\n" +
-                            "Pressure: " +
-                            weatherResponse.weather[0].id.toInt().toString()
-
-                    textView3.text = weatherResponse.name + ", " + weatherResponse.sys!!.country
-                    textView4.text = weatherResponse.weather[0].description
-                    val temp = weatherResponse.main!!.temp - 273
-                    textView5.text = "%.2f".format(temp) + "℃"
-                    textView6.text = weatherResponse.wind!!.speed.toString() + " м/c"
-                    textView7.text = weatherResponse.main!!.pressure.toString() + " hPa"
-                    textView8.text = weatherResponse.main!!.humidity.toString() + " %"
-
-                    val watherId = weatherResponse.weather[0].id.toInt()
-                    val image = when (watherId) {
-                        in 500..700 -> R.drawable.rainy
-                        else -> R.drawable.sun
-                    }
-
-                    imageView3.setImageResource(image)
+                    setDailyList(weatherResponse!!)
+                    saveDailyList(weatherResponse!!)
                 }
             }
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                textView4.text = t.message
+                println(t.message)
+
+                weatherResponse = getDailyList()
+                if (weatherResponse != null) {
+                    setDailyList(weatherResponse!!)
+                }
             }
         })
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    fun saveDailyList(weatherResponse: WeatherResponse) {
+        val prefs = getSharedPreferences("saved_data", Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        val jsonString = Gson().toJson(weatherResponse)
+        editor.putString("dailyJSON", jsonString)
+        editor.apply()
+    }
+
+    fun getDailyList(): WeatherResponse? {
+        val prefs = getSharedPreferences("saved_data", Context.MODE_PRIVATE)
+        val jsonString = prefs.getString("dailyJSON","")
+        if (jsonString != "") {
+            return Gson().fromJson(jsonString, WeatherResponse::class.java)
+        } else {
+            return null
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun setDailyList(weatherResponse: WeatherResponse) {
+        val imgDays = listOf(imageViewMO, imageViewTU, imageViewWE, imageViewTH, imageViewFR, imageViewSA, imageViewSU)
+        val labelDays = listOf(textViewMO, textViewTU, textViewWE, textViewTH, textViewFR, textViewSA, textViewSU)
+
+        for (i in 0..6) {
+            val weather = weatherResponse.daily[i]
+            val image = when (weather.weather[0].id) {
+                in 500..700 -> R.drawable.rainy
+                else -> R.drawable.sun
+            }
+            imgDays[i].setImageResource(image)
+
+            val cTemp = weather.temp!!.day - 273
+            labelDays[i].text = "%.2f".format(cTemp) + "℃"
+        }
+
+        selectDay(0)
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun setDay(weatherResponse: DailyWeatherResponse) {
+        val temp = weatherResponse.temp!!.day - 273
+        textView5.text = "%.2f".format(temp) + "℃"
+        textView6.text = weatherResponse.wind_speed.toString() + " м/c"
+        textView7.text = weatherResponse.pressure.toString() + " hPa"
+        textView8.text = weatherResponse.humidity.toString() + " %"
+    }
+
+    @SuppressLint("ResourceAsColor")
+    fun selectDay(view: View) {
+        val id = view.getTag().toString().toInt()
+        val weather = weatherResponse ?: return
+        setDay(weather.daily[id])
+    }
+
+    fun selectDay(id: Int) {
+        val weather = weatherResponse ?: return
+        setDay(weather.daily[id])
     }
 }
