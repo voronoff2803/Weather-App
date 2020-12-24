@@ -1,5 +1,6 @@
 package com.androimads.retrolin
 
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,3 +11,7 @@ interface WeatherService {
     fun getForecastWeatherData(@Query("lat") lat: String, @Query("lon") lon: String, @Query("APPID") app_id: String, @Query("lang") lang: String): Call<WeatherResponse>
 }
 
+interface WeatherServiceRX {
+    @GET("data/2.5/onecall?")
+    fun getForecastWeatherData(@Query("lat") lat: String, @Query("lon") lon: String, @Query("APPID") app_id: String, @Query("lang") lang: String): Single<WeatherResponse>
+}

@@ -2,20 +2,27 @@ package com.example.weatherapp
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Message
 import android.view.View
-import com.androimads.retrolin.WeatherResponse
+import androidx.appcompat.app.AppCompatActivity
 import com.androimads.retrolin.DailyWeatherResponse
+import com.androimads.retrolin.WeatherResponse
 import com.androimads.retrolin.WeatherService
+import com.androimads.retrolin.WeatherServiceRX
 import com.google.gson.Gson
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.annotations.NonNull
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class MainActivity : AppCompatActivity() {
     var isDarkTheme: Boolean = false
@@ -45,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        getWeekData()
+        getWeekDataRX()
     }
 
     fun changeTheme(view: View) {
@@ -59,8 +66,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getWeekData() {
-        println("test")
-
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -86,6 +91,41 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    fun getWeekDataRX() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+
+        val weatherApi: WeatherServiceRX = retrofit.create(WeatherServiceRX::class.java)
+
+        weatherApi.getForecastWeatherData(lat, lon, apiKey, lang)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : DisposableSingleObserver<WeatherResponse?>() {
+                override fun onSuccess(@NonNull response: WeatherResponse) {
+                    weatherResponse = response
+
+                    setDailyList(weatherResponse!!)
+                    saveDailyList(weatherResponse!!)
+                }
+
+                override fun onError(@NonNull e: Throwable) {
+                    println("onError $e")
+
+                    weatherResponse = getDailyList()
+                    if (weatherResponse != null) {
+                        setDailyList(weatherResponse!!)
+                    }
+                }
+            })
+
+
+
+
     }
 
     @SuppressLint("CommitPrefEdits")
